@@ -14,7 +14,7 @@ const MyProfile = () => {
   }, []);
 
   return (
-    <MainLayout>
+    <>
       <div className="container mx-auto p-8">
         {user ? (
           <div>
@@ -27,7 +27,7 @@ const MyProfile = () => {
           <p>Loading...</p>
         )}
       </div>
-    </MainLayout>
+    </>
   );
 };
 

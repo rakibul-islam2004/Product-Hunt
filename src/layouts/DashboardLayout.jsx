@@ -56,7 +56,9 @@ const DashboardLayout = ({ children }) => {
       {/* Sidebar */}
       <div className="w-64 bg-gray-900 text-white flex flex-col">
         <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Dashboard</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            <Link to="/dashboard">Dashboard</Link>
+          </h2>
         </div>
         <ul className="flex-1 px-4 space-y-2">
           {role === "admin" && (
@@ -127,39 +129,24 @@ const DashboardLayout = ({ children }) => {
             <>
               <li>
                 <Link
-                  to="/user/products"
+                  to="/profile"
+                  className="block py-2 px-4 rounded hover:bg-gray-700"
+                >
+                  My Profile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/my-products"
                   className="block py-2 px-4 rounded hover:bg-gray-700"
                 >
                   My Products
                 </Link>
               </li>
+
               <li>
                 <Link
-                  to="/user/favorites"
-                  className="block py-2 px-4 rounded hover:bg-gray-700"
-                >
-                  Favorite Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/user/reports"
-                  className="block py-2 px-4 rounded hover:bg-gray-700"
-                >
-                  Report a Product
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/user/reviews"
-                  className="block py-2 px-4 rounded hover:bg-gray-700"
-                >
-                  My Reviews
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/user/submit"
+                  to="/add-product"
                   className="block py-2 px-4 rounded hover:bg-gray-700"
                 >
                   Submit New Product
@@ -167,30 +154,6 @@ const DashboardLayout = ({ children }) => {
               </li>
             </>
           )}
-          <li>
-            <Link
-              to="/dashboard"
-              className="block py-2 px-4 rounded hover:bg-gray-700"
-            >
-              My Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/dashboard/settings"
-              className="block py-2 px-4 rounded hover:bg-gray-700"
-            >
-              Settings
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/dashboard/help"
-              className="block py-2 px-4 rounded hover:bg-gray-700"
-            >
-              Help & Support
-            </Link>
-          </li>
           <li>
             <Link to="/" className="block py-2 px-4 rounded hover:bg-gray-700">
               Back to Home

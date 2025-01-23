@@ -1,5 +1,6 @@
 import React from "react";
 import MainLayout from "../layouts/DashboardLayout";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   return (
@@ -10,9 +11,11 @@ const Dashboard = () => {
           <p className="mb-4">
             Welcome to your dashboard. Manage your profile and products here.
           </p>
-          <button className="py-2 px-4 bg-blue-500 text-white rounded">
-            Manage Profile
-          </button>
+          <Link to="/profile">
+            <button className="py-2 px-4 bg-blue-500 text-white rounded">
+              Manage Profile
+            </button>
+          </Link>
         </div>
       </div>
     </MainLayout>
