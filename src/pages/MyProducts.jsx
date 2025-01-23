@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import MainLayout from "../layouts/DashboardLayout";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import useAuth from "../hooks/useAuth";
 
 const MyProducts = () => {
   const [myProducts, setMyProducts] = useState([]);
+  const { user } = useAuth(); // Correctly destructure 'user' here
 
   useEffect(() => {
     // Fetch user's products from the API
     const fetchMyProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products/my-products"
+          `http://localhost:5000/products/${user.email}`
         );
         setMyProducts(response.data);
       } catch (error) {
@@ -19,8 +21,10 @@ const MyProducts = () => {
       }
     };
 
-    fetchMyProducts();
-  }, []);
+    if (user) {
+      fetchMyProducts();
+    }
+  }, [user]);
 
   const handleDelete = async (id) => {
     try {
