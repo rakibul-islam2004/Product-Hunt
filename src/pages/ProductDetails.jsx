@@ -1,46 +1,132 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import ProductDetailsCard from "../components/ProductDetailsCard";
-import ReviewCard from "../components/ReviewCard";
-import UpvoteButton from "../components/UpvoteButton";
-import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
+import MainLayout from "../layouts/MainLayout";
+import useAuth from "../hooks/useAuth";
 
-const ProductDetails = ({ match }) => {
-  const [product, setProduct] = useState({});
+const ProductDetails = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [userRating, setUserRating] = useState(5);
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchProductDetails = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.get(`http://localhost:5000/product/${id}`);
+      const productData = response.data?.product;
+
+      if (productData) {
+        setProduct(productData);
+        setReviews(productData.reviews || []);
+      } else {
+        setError("Product data not found.");
+      }
+    } catch (err) {
+      console.error("Error fetching product details:", err);
+      setError("Failed to fetch product details. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/products/${match.params.id}`
-        );
-        setProduct(response.data.product);
-        setReviews(response.data.product.reviews);
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
-    };
-
     fetchProductDetails();
-  }, [match.params.id]);
+  }, [fetchProductDetails]);
+
+  // Handle Upvote
+  const handleUpvote = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5000/upvote/${id}`, {
+        userId: user.uid,
+      });
+
+      // Update the UI based on the server's response
+      if (response.data.message === "Upvote added") {
+        setProduct((prev) => ({
+          ...prev,
+          upvotes: Array.isArray(prev.upvotes)
+            ? [...prev.upvotes, user.uid]
+            : [user.uid],
+        }));
+      } else if (response.data.message === "Upvote removed") {
+        setProduct((prev) => ({
+          ...prev,
+          upvotes: Array.isArray(prev.upvotes)
+            ? prev.upvotes.filter((u) => u !== user.uid)
+            : [],
+        }));
+      }
+    } catch (err) {
+      console.error("Error upvoting:", err);
+      alert("Failed to upvote. Please try again.");
+    }
+  };
+
+  // Determine ownership and upvote status
+  const isOwner = product?.ownerId === user.uid;
+  const hasUpvoted =
+    Array.isArray(product?.upvotes) && product.upvotes.includes(user.uid);
+
+  // Handle Review Submit
+  const handleReviewSubmit = async (reviewText) => {
+    try {
+      const newReview = {
+        reviewDescription: reviewText,
+        rating: userRating,
+        reviewerName: user.displayName,
+        reviewerImage: user.photoURL || "",
+      };
+
+      await axios.post(`http://localhost:5000/reviews/${id}`, newReview);
+
+      setReviews((prev) => [...prev, newReview]);
+    } catch (err) {
+      console.error("Error submitting review:", err);
+      alert("Failed to submit review. Please try again.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="container mx-auto p-8">
+          <p>Loading product details...</p>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <MainLayout>
+        <div className="container mx-auto p-8">
+          <p className="text-red-500">{error}</p>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
       <div className="container mx-auto p-8">
-        <ProductDetailsCard product={product} />
-        <div className="mt-8 flex justify-between items-center">
-          <UpvoteButton productId={product.id} />
-        </div>
-
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold">Reviews</h3>
-          <div className="mt-4">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
-        </div>
+        <ProductDetailsCard
+          product={product}
+          onUpvote={isOwner ? null : handleUpvote} // Disable if the user is the owner
+          reviews={reviews}
+          onReviewSubmit={handleReviewSubmit}
+          userRating={userRating}
+          setUserRating={setUserRating}
+          hasUpvoted={hasUpvoted} // Pass whether the user has upvoted
+          isOwner={isOwner} // Pass whether the user is the owner
+          totalUpvotes={product?.upvotes?.length || 0} // Pass total upvotes
+        />
       </div>
     </MainLayout>
   );

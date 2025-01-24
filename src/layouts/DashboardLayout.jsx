@@ -109,15 +109,7 @@ const DashboardLayout = ({ children }) => {
               </li>
               <li>
                 <Link
-                  to="/moderator/reports"
-                  className="block py-2 px-4 rounded hover:bg-gray-700"
-                >
-                  Reported Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/moderator/featured"
+                  to="/featured"
                   className="block py-2 px-4 rounded hover:bg-gray-700"
                 >
                   Mark Featured
