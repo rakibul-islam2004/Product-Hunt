@@ -21,6 +21,7 @@ import ModerateProducts from "./pages/ModerateProducts";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdminRoute from "./routes/AdminRoute";
 import ModeratorRoute from "./routes/ModeratorRoute";
+import UpdateProduct from "./pages/UpdateProduct";
 
 const App = () => {
   const { user, loading } = useAuth();
@@ -44,6 +45,15 @@ const App = () => {
       <Route path="/register" element={<Register />} />
 
       {/* Private Routes (Authenticated Users Only) */}
+      <Route
+        path="/update-product/:id"
+        element={
+          <PrivateRoute>
+            <UpdateProduct />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="/dashboard"
         element={

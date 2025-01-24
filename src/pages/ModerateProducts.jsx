@@ -6,17 +6,25 @@ const ModerateProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch pending products from the server
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products?status=pending"
+          "http://localhost:5000/productsModerator/pending"
         );
-        setProducts(response.data);
-        setLoading(false);
-      } catch (error) {
+
+        console.log("Response from server:", response.data);
+
+        if (Array.isArray(response.data)) {
+          setProducts(response.data);
+        } else {
+          setError("Unexpected response format. Expected an array.");
+        }
+      } catch (err) {
         setError("Failed to fetch products.");
-        console.error("Error fetching products:", error);
+        console.error("Error fetching products:", err);
+      } finally {
         setLoading(false);
       }
     };
@@ -24,20 +32,33 @@ const ModerateProducts = () => {
     fetchProducts();
   }, []);
 
+  // Handle product moderation (Approve/Reject)
   const handleModeration = async (productId, action) => {
     try {
-      await axios.put(`http://localhost:5000/products/${productId}`, {
-        status: action,
-      });
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product._id !== productId)
+      // Ensure the action sent to the backend is either "approved" or "rejected"
+      const status = action === "approve" ? "approved" : "rejected";
+
+      const response = await axios.patch(
+        `http://localhost:5000/products/${productId}`,
+        { status }
       );
-    } catch (error) {
-      console.error("Error moderating product:", error);
+
+      if (response.status === 200) {
+        // Remove moderated product from the list
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== productId)
+        );
+      } else {
+        throw new Error("Failed to update product status.");
+      }
+    } catch (err) {
+      console.error("Error moderating product:", err);
+      setError("Failed to update product status.");
     }
   };
 
   if (loading) return <div>Loading...</div>;
+
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
@@ -49,17 +70,21 @@ const ModerateProducts = () => {
         <table className="table-auto w-full mt-4">
           <thead>
             <tr>
-              <th className="px-4 py-2">Product Name</th>
-              <th className="px-4 py-2">Submitted By</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="px-4 py-2 text-left">Product Name</th>
+              <th className="px-4 py-2 text-left">Submitted By</th>
+              <th className="px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
               <tr key={product._id}>
-                <td className="border px-4 py-2">{product.name}</td>
-                <td className="border px-4 py-2">{product.submittedBy}</td>
-                <td className="border px-4 py-2">
+                <td className="border px-4 py-2 text-left">
+                  {product.name || "N/A"}
+                </td>
+                <td className="border px-4 py-2 text-left">
+                  {product.userName || product.userEmail || "N/A"}
+                </td>
+                <td className="border px-4 py-2 text-left">
                   <button
                     onClick={() => handleModeration(product._id, "approve")}
                     className="bg-green-500 text-white px-4 py-2 rounded mr-2"
