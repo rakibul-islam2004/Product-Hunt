@@ -1,24 +1,35 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 
-const SearchBar = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
+const SearchBar = ({ setSearchQuery }) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
   const handleSearch = () => {
-    onSearch(query);
+    setSearchQuery(inputValue); // Update the search query in the parent component
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(); // Trigger search on Enter key press
+    }
   };
 
   return (
-    <div className="flex items-center space-x-2 mb-6">
+    <div className="flex items-center">
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="p-2 border border-gray-300 rounded-md"
-        placeholder="Search for products..."
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
+        placeholder="Search products..."
+        className="border rounded-lg p-2 w-64"
       />
       <button
         onClick={handleSearch}
-        className="bg-blue-600 text-white py-2 px-4 rounded-md"
+        className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
       >
         Search
       </button>
