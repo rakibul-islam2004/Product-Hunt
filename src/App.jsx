@@ -22,6 +22,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import AdminRoute from "./routes/AdminRoute";
 import ModeratorRoute from "./routes/ModeratorRoute";
 import UpdateProduct from "./pages/UpdateProduct";
+import FeaturedProducts from "./pages/FeaturedProducts";
 
 const App = () => {
   const { user, loading } = useAuth();
@@ -132,6 +133,16 @@ const App = () => {
           <ModeratorRoute>
             <DashboardLayout>
               <ModerateProducts />
+            </DashboardLayout>
+          </ModeratorRoute>
+        }
+      />
+      <Route
+        path="/featured"
+        element={
+          <ModeratorRoute>
+            <DashboardLayout>
+              <FeaturedProducts />
             </DashboardLayout>
           </ModeratorRoute>
         }
