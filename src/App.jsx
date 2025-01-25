@@ -23,6 +23,7 @@ import AdminRoute from "./routes/AdminRoute";
 import ModeratorRoute from "./routes/ModeratorRoute";
 import UpdateProduct from "./pages/UpdateProduct";
 import FeaturedProducts from "./pages/FeaturedProducts";
+import AdminStatistics from "./pages/AdminStatistics";
 
 const App = () => {
   const { user, loading } = useAuth();
@@ -111,6 +112,17 @@ const App = () => {
           <AdminRoute>
             <DashboardLayout>
               <AdminUserManagement />
+            </DashboardLayout>
+          </AdminRoute>
+        }
+      />
+
+      <Route
+        path="/admin/statistics"
+        element={
+          <AdminRoute>
+            <DashboardLayout>
+              <AdminStatistics />
             </DashboardLayout>
           </AdminRoute>
         }
