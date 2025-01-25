@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { getUsers, updateUserRole } from "../utils/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useAuth from "../hooks/useAuth";
 
 const AdminUserManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user: currentUser } = useAuth();
+  const [isCurrentUser, setIsCurrentUser] = useState(false); // Track if currentUser is available
+
+  useEffect(() => {
+    if (currentUser?.email) {
+      setIsCurrentUser(true); // Ensure we re-render when currentUser is available
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -21,6 +32,12 @@ const AdminUserManagement = () => {
   }, []);
 
   const handleRoleChange = async (userId, newRole) => {
+    // Ensure admin cannot change their own role
+    if (userId === currentUser?.uid) {
+      toast.error("You cannot change your own role.");
+      return;
+    }
+
     try {
       await updateUserRole(userId, newRole);
       setUsers(
@@ -30,6 +47,7 @@ const AdminUserManagement = () => {
       );
     } catch (error) {
       console.error("Error updating user role:", error);
+      toast.error("Failed to update user role.");
     }
   };
 
@@ -58,8 +76,11 @@ const AdminUserManagement = () => {
               <td className="border px-4 py-2">
                 <select
                   value={user.role}
-                  onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                  onChange={(e) =>
+                    handleRoleChange(user._id, e.target.value, user.email)
+                  }
                   className="p-2 border rounded"
+                  disabled={String(user.email) === String(currentUser?.email)}
                 >
                   <option value="user">User</option>
                   <option value="moderator">Moderator</option>

@@ -15,7 +15,7 @@ const getUsers = async () => {
 // Update user role
 const updateUserRole = async (userId, newRole) => {
   try {
-    const response = await axios.put(`${API_URL}/users/${userId}/role`, {
+    const response = await axios.patch(`${API_URL}/users/${userId}/role`, {
       role: newRole,
     });
     return response.data;

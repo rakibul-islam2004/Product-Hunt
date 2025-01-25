@@ -19,17 +19,20 @@ const LoginPage = () => {
     try {
       const { token } = await loginWithEmail(email, password);
 
-      const roleResponse = await fetch("http://localhost:5000/get-role", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include JWT token
-        },
-      });
+      const roleResponse = await fetch(
+        `http://localhost:5000/getRole/${email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include JWT token
+          },
+        }
+      );
       const roleData = await roleResponse.json();
 
-      if (roleData.role === "admin") navigate("/admin-dashboard");
-      else if (roleData.role === "moderator") navigate("/moderator-dashboard");
+      if (roleData.role === "admin") navigate("/dashboard");
+      else if (roleData.role === "moderator") navigate("/dashboard");
       else navigate("/");
     } catch (err) {
       setError(`${err}`);
@@ -41,17 +44,20 @@ const LoginPage = () => {
     try {
       const { token } = await loginWithGoogle();
 
-      const roleResponse = await fetch("http://localhost:5000/get-role", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const roleResponse = await fetch(
+        `http://localhost:5000/getRole/${email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const roleData = await roleResponse.json();
 
-      if (roleData.role === "admin") navigate("/admin-dashboard");
-      else if (roleData.role === "moderator") navigate("/moderator-dashboard");
+      if (roleData.role === "admin") navigate("/dashboard");
+      else if (roleData.role === "moderator") navigate("/dashboard");
       else navigate("/");
     } catch (err) {
       setError(`${err}`);
