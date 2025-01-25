@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
+import TrendingProducts from "../components/TrendingProducts";
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -41,7 +42,13 @@ const Home = () => {
       </div>
 
       <section className="container mx-auto p-8 mt-8">
-        <h2 className="text-2xl font-semibold mb-4">Featured Products</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Featured Products
+        </h2>
+        <p className="text-center text-gray-600 mb-8">
+          Hand-picked selection of the best tech products you need to explore
+          today.
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {featuredProducts.length > 0 ? (
             featuredProducts.map((product) => (
@@ -52,6 +59,7 @@ const Home = () => {
           )}
         </div>
       </section>
+      <TrendingProducts />
     </MainLayout>
   );
 };
