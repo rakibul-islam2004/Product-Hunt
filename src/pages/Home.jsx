@@ -11,7 +11,7 @@ const Home = () => {
     const fetchFeaturedProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products?featured=true"
+          "http://localhost:5000/featuredProducts"
         );
 
         // Ensure the response data is an array
