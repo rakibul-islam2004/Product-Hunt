@@ -79,14 +79,6 @@ const DashboardLayout = ({ children }) => {
                   Statistics
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/admin/products"
-                  className="block py-2 px-4 rounded hover:bg-gray-700"
-                >
-                  Manage Products
-                </Link>
-              </li>
             </>
           )}
           {role === "moderator" && (
@@ -105,6 +97,14 @@ const DashboardLayout = ({ children }) => {
                   className="block py-2 px-4 rounded hover:bg-gray-700"
                 >
                   Mark Featured
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/reported"
+                  className="block py-2 px-4 rounded hover:bg-gray-700"
+                >
+                  Reported Products
                 </Link>
               </li>
             </>

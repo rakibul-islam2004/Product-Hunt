@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ProductDetailsCard = ({
   product,
@@ -11,10 +14,25 @@ const ProductDetailsCard = ({
   hasUpvoted,
 }) => {
   const [reviewText, setReviewText] = useState("");
+  const [isReported, setIsReported] = useState(product.isReported || false);
+  const [isLoading, setIsLoading] = useState(false); // Local loading state
 
-  // Handle changes in the review text area
-  const handleReviewTextChange = (event) => {
-    setReviewText(event.target.value);
+  // Function to update the "isReported" property in the database
+  const updateReportedStatus = async (productId, newReportedStatus) => {
+    setIsLoading(true); // Start loading
+    try {
+      await axios.put(`http://localhost:5000/updateIsReported/${productId}`, {
+        isReported: newReportedStatus,
+      });
+      setIsReported(newReportedStatus); // Update the local state
+    } catch (error) {
+      console.error("Failed to update reported status:", error);
+      alert(
+        "An error occurred while updating the reported status. Please try again."
+      );
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
   };
 
   // Handle review submission
@@ -26,6 +44,25 @@ const ProductDetailsCard = ({
     }
   };
 
+  // Handle report/unreport functionality
+  const handleReportToggle = () => {
+    confirmAlert({
+      title: isReported ? "Unreport Product" : "Report Product",
+      message: isReported
+        ? "Are you sure you want to unreport this product?"
+        : "Are you sure you want to report this product?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => updateReportedStatus(product._id, !isReported),
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
+
   // Ensure reviews is an array to avoid rendering issues
   const validReviews = Array.isArray(reviews) ? reviews : [];
 
@@ -34,11 +71,17 @@ const ProductDetailsCard = ({
 
   // Replace the backslash with a forward slash in the image path
   const productImageUrl = product?.image
-    ? `${baseImageUrl}${product.image.replace("\\", "/")}` // Fix the backslash issue
-    : "/default-product.png"; // Fallback to default image if no product image is available
+    ? `${baseImageUrl}${product.image.replace("\\", "/")}`
+    : "/default-product.png";
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6">
+    <div className="bg-white shadow-lg rounded-lg p-6 relative">
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-green-500"></div>
+        </div>
+      )}
+
       {/* Product Information */}
       <div className="flex justify-between">
         <div className="flex flex-col">
@@ -47,7 +90,7 @@ const ProductDetailsCard = ({
           <div className="flex items-center mt-4">
             <button
               onClick={isOwner ? null : onUpvote}
-              disabled={isOwner} // Disable button if the user is the owner
+              disabled={isOwner}
               className={`px-4 py-2 font-bold text-white rounded ${
                 hasUpvoted ? "bg-gray-500" : "bg-green-500"
               }`}
@@ -58,14 +101,25 @@ const ProductDetailsCard = ({
           </div>
         </div>
         <div className="w-32 h-32 rounded-full overflow-hidden">
-          <div className="w-32 h-32 rounded-full overflow-hidden">
-            <img
-              src={productImageUrl}
-              alt={product.name}
-              className="object-cover w-full h-full"
-            />
-          </div>
+          <img
+            src={productImageUrl}
+            alt={product.name}
+            className="object-cover w-full h-full"
+          />
         </div>
+      </div>
+
+      {/* Report/Unreport Button */}
+      <div className="mt-4">
+        <button
+          onClick={handleReportToggle}
+          className={`px-4 py-2 font-bold text-white rounded ${
+            isReported ? "bg-blue-500" : "bg-red-500"
+          }`}
+          disabled={isLoading} // Disable button during loading state
+        >
+          {isReported ? "Unreport" : "Report"}
+        </button>
       </div>
 
       {/* Reviews Section */}
@@ -107,7 +161,7 @@ const ProductDetailsCard = ({
         <form onSubmit={handleReviewSubmit} className="mt-4">
           <textarea
             value={reviewText}
-            onChange={handleReviewTextChange}
+            onChange={(e) => setReviewText(e.target.value)}
             placeholder="Write your review here..."
             className="w-full p-2 border rounded-md"
             rows="4"

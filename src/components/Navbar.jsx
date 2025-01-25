@@ -119,7 +119,7 @@ const Navbar = () => {
                   }
                 />
                 {isProfileDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-md rounded-lg">
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-md rounded-lg z-10">
                     <div className="p-4">
                       <p className="font-bold">{user.displayName}</p>
                     </div>

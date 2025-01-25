@@ -11,7 +11,7 @@ const AddProduct = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const { user } = useAuth(); // Assuming useAuth provides the authenticated user
+  const { user } = useAuth();
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
@@ -26,8 +26,8 @@ const AddProduct = () => {
     formData.append("name", productName);
     formData.append("description", productDescription);
     formData.append("link", productLink);
-    formData.append("userName", user.name); // Add user name to the form data
-    formData.append("userEmail", user.email); // Add user email to the form data
+    formData.append("userName", user.displayName);
+    formData.append("userEmail", user.email);
     if (productImage) {
       formData.append("image", productImage); // Add image if available
     }
