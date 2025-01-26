@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
+import Swal from "sweetalert2"; // Import SweetAlert2
+import "sweetalert2/dist/sweetalert2.min.css"; // SweetAlert2 styles
 
 const ProductDetailsCard = ({
   product,
@@ -46,20 +46,21 @@ const ProductDetailsCard = ({
 
   // Handle report/unreport functionality
   const handleReportToggle = () => {
-    confirmAlert({
+    Swal.fire({
       title: isReported ? "Unreport Product" : "Report Product",
-      message: isReported
+      text: isReported
         ? "Are you sure you want to unreport this product?"
         : "Are you sure you want to report this product?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => updateReportedStatus(product._id, !isReported),
-        },
-        {
-          label: "No",
-        },
-      ],
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        updateReportedStatus(product._id, !isReported);
+      }
     });
   };
 

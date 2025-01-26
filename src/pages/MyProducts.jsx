@@ -78,7 +78,7 @@ const MyProducts = () => {
                 <tr key={product._id} className="border-b hover:bg-gray-50">
                   <td className="py-4 px-6 text-gray-800">{product.name}</td>
                   <td className="py-4 px-6 text-gray-800">
-                    {product.votes || 0}
+                    {product.upvotes.length || 0}
                   </td>
                   <td
                     className={`py-4 px-6 font-medium ${

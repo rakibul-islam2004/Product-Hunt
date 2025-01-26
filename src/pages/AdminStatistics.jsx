@@ -32,7 +32,12 @@ const AdminStatistics = () => {
         const acceptedProducts = products.filter(
           (product) => product.status === "approved"
         ).length;
-        const pendingProducts = totalProducts - acceptedProducts;
+        const pendingProducts = products.filter(
+          (product) => product.status === "pending"
+        ).length;
+        const rejectedProducts = products.filter(
+          (product) => product.status === "rejected"
+        ).length;
         const totalReviews = products.reduce(
           (sum, product) => sum + product.reviews.length,
           0
@@ -43,6 +48,7 @@ const AdminStatistics = () => {
           totalProducts,
           acceptedProducts,
           pendingProducts,
+          rejectedProducts,
           totalReviews,
           totalUsers,
         });
@@ -64,6 +70,7 @@ const AdminStatistics = () => {
     labels: [
       "Accepted Products",
       "Pending Products",
+      "Rejected Products",
       "Total Reviews",
       "Total Users",
     ],
@@ -72,10 +79,17 @@ const AdminStatistics = () => {
         data: [
           stats.acceptedProducts,
           stats.pendingProducts,
+          stats.rejectedProducts,
           stats.totalReviews,
           stats.totalUsers,
         ],
-        backgroundColor: ["#4caf50", "#f44336", "#2196f3", "#ff9800"],
+        backgroundColor: [
+          "#4caf50",
+          "#888836",
+          "#f44336",
+          "#2196f3",
+          "#ff9800",
+        ],
         borderWidth: 1,
       },
     ],
@@ -105,6 +119,9 @@ const AdminStatistics = () => {
         </p>
         <p>
           <strong>Pending Products:</strong> {stats.pendingProducts}
+        </p>
+        <p>
+          <strong>Rejected Products:</strong> {stats.rejectedProducts}
         </p>
         <p>
           <strong>Total Reviews:</strong> {stats.totalReviews}
