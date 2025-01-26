@@ -7,33 +7,42 @@ const UpdateProduct = () => {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productLink, setProductLink] = useState("");
-  const [productImage, setProductImage] = useState(null);
+  const [productImageURL, setProductImageURL] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the product ID from the URL params
-  const { user } = useAuth(); // Assuming useAuth provides the authenticated user
+  const { id } = useParams();
+  const { user } = useAuth();
 
   // Fetch the current product data based on the product ID
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/product/${id}`);
-        const product = response.data;
+        const data = response.data;
+        const product = data.product;
 
-        setProductName(product.name);
-        setProductDescription(product.description);
-        setProductLink(product.link);
-        // You may want to set a preview image or handle image differently
+        // Log the product data for debugging
+        console.log("Fetched product data:", product);
+
+        // Set the product data to the state only after it's fetched
+        setProductName(product.name || "");
+        setProductDescription(product.description || "");
+        setProductLink(product.link || "");
+        setProductImageURL(product.image || ""); // Ensure it's set to a valid URL or empty
+
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         setError("Failed to fetch product data.");
         console.error("Error fetching product:", error);
+        setLoading(false); // Set loading to false if there's an error
       }
     };
 
     if (id) {
       fetchProduct();
     }
-  }, [id]);
+  }, [id]); // Depend on 'id' so it fetches the data again if the id changes
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
@@ -48,10 +57,10 @@ const UpdateProduct = () => {
     formData.append("name", productName);
     formData.append("description", productDescription);
     formData.append("link", productLink);
-    formData.append("userName", user.name); // Add user name to the form data
-    formData.append("userEmail", user.email); // Add user email to the form data
-    if (productImage) {
-      formData.append("image", productImage); // Add image if available
+    formData.append("userName", user.displayName);
+    formData.append("userEmail", user.email);
+    if (productImageURL) {
+      formData.append("image", productImageURL);
     }
 
     try {
@@ -60,7 +69,7 @@ const UpdateProduct = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           withCredentials: true,
         }
@@ -74,6 +83,10 @@ const UpdateProduct = () => {
       console.error("Error updating product:", error.response || error.message);
     }
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="container mx-auto p-8">
@@ -114,10 +127,11 @@ const UpdateProduct = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-lg">Product Image</label>
+          <label className="block text-lg">Product Image URL</label>
           <input
-            type="file"
-            onChange={(e) => setProductImage(e.target.files[0])}
+            type="url"
+            value={productImageURL}
+            onChange={(e) => setProductImageURL(e.target.value)}
             className="w-full p-4 border rounded"
           />
         </div>

@@ -33,7 +33,7 @@ const TrendingProducts = () => {
       <p className="text-center text-gray-600 mb-8">
         Check out the most popular tech products that everyone is talking about.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {trendingProducts.length > 0 ? (
           trendingProducts.map((product) => (
             <ProductCard key={product._id} product={product} />

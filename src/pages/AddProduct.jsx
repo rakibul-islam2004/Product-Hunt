@@ -7,7 +7,7 @@ const AddProduct = () => {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productLink, setProductLink] = useState("");
-  const [productImage, setProductImage] = useState(null);
+  const [productImageURL, setProductImageURL] = useState(""); // Changed from file to URL
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -28,8 +28,8 @@ const AddProduct = () => {
     formData.append("link", productLink);
     formData.append("userName", user.displayName);
     formData.append("userEmail", user.email);
-    if (productImage) {
-      formData.append("image", productImage); // Add image if available
+    if (productImageURL) {
+      formData.append("image", productImageURL); // Send image URL
     }
 
     try {
@@ -38,7 +38,7 @@ const AddProduct = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           withCredentials: true,
         }
@@ -92,10 +92,11 @@ const AddProduct = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-lg">Product Image</label>
+          <label className="block text-lg">Product Image URL</label>
           <input
-            type="file"
-            onChange={(e) => setProductImage(e.target.files[0])}
+            type="url"
+            value={productImageURL} // Updated to accept image URL
+            onChange={(e) => setProductImageURL(e.target.value)}
             className="w-full p-4 border rounded"
           />
         </div>
