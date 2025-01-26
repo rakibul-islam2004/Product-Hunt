@@ -11,7 +11,7 @@ const ModeratorDashboard = () => {
     const fetchReviewProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products/review"
+          "https://product-hunt-server-eight.vercel.app/products/review"
         );
         setProductsForReview(response.data);
       } catch (error) {
@@ -23,7 +23,7 @@ const ModeratorDashboard = () => {
     const fetchReportedProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products/reported"
+          "https://product-hunt-server-eight.vercel.app/products/reported"
         );
         setReportedProducts(response.data);
       } catch (error) {
@@ -37,7 +37,9 @@ const ModeratorDashboard = () => {
 
   const handleProductApproval = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/products/${id}/approve`);
+      await axios.put(
+        `https://product-hunt-server-eight.vercel.app/products/${id}/approve`
+      );
       setProductsForReview(
         productsForReview.filter((product) => product.id !== id)
       );
@@ -48,7 +50,9 @@ const ModeratorDashboard = () => {
 
   const handleProductRejection = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/products/${id}/reject`);
+      await axios.put(
+        `https://product-hunt-server-eight.vercel.app/products/${id}/reject`
+      );
       setProductsForReview(
         productsForReview.filter((product) => product.id !== id)
       );

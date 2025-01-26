@@ -20,7 +20,7 @@ const LoginPage = () => {
       const { token } = await loginWithEmail(email, password);
 
       const roleResponse = await fetch(
-        `http://localhost:5000/getRole/${email}`,
+        `https://product-hunt-server-eight.vercel.app/getRole/${email}`,
         {
           method: "GET",
           headers: {
@@ -45,7 +45,7 @@ const LoginPage = () => {
       const { token } = await loginWithGoogle();
 
       const roleResponse = await fetch(
-        `http://localhost:5000/getRole/${email}`,
+        `https://product-hunt-server-eight.vercel.app/getRole/${email}`,
         {
           method: "GET",
           headers: {
@@ -106,12 +106,6 @@ const LoginPage = () => {
               Login
             </button>
           </form>
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full bg-red-500 text-white p-2 rounded"
-          >
-            Login with Google
-          </button>
           <Link to="/register" className="block text-center mt-4 text-blue-500">
             Don't have an account? Register
           </Link>

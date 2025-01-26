@@ -12,7 +12,7 @@ const TrendingProducts = () => {
     const fetchTrendingProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/trendingProducts"
+          "https://product-hunt-server-eight.vercel.app/trendingProducts"
         );
         if (Array.isArray(response.data)) {
           setTrendingProducts(response.data);

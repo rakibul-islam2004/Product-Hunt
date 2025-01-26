@@ -11,7 +11,7 @@ const ModerateProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/productsModerator/pending"
+          "https://product-hunt-server-eight.vercel.app/productsModerator/pending"
         );
 
         console.log("Response from server:", response.data);
@@ -39,7 +39,7 @@ const ModerateProducts = () => {
       const status = action === "approve" ? "approved" : "rejected";
 
       const response = await axios.patch(
-        `http://localhost:5000/products/${productId}`,
+        `https://product-hunt-server-eight.vercel.app/products/${productId}`,
         { status }
       );
 

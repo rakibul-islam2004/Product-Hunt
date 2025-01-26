@@ -11,7 +11,7 @@ const AdminDashboard = () => {
     const fetchUserStats = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/admin/user-stats"
+          "https://product-hunt-server-eight.vercel.app/admin/user-stats"
         );
         setUserStats(response.data);
       } catch (error) {
@@ -22,7 +22,9 @@ const AdminDashboard = () => {
     // Fetch available coupons
     const fetchCoupons = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/admin/coupons");
+        const response = await axios.get(
+          "https://product-hunt-server-eight.vercel.app/admin/coupons"
+        );
         setCoupons(response.data);
       } catch (error) {
         console.error("Error fetching coupons:", error);

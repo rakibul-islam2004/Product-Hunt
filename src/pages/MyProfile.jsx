@@ -18,7 +18,7 @@ const MyProfile = () => {
       if (user && user.email) {
         try {
           const response = await axios.get(
-            `http://localhost:5000/users/${user.email}`
+            `https://product-hunt-server-eight.vercel.app/users/${user.email}`
           );
           setIsSubscribed(response.data.isSubscribed || false);
         } catch (error) {
@@ -43,9 +43,12 @@ const MyProfile = () => {
   const handlePaymentSuccess = async () => {
     setPaymentProcessing(true);
     try {
-      await axios.put(`http://localhost:5000/users/${user.email}`, {
-        isSubscribed: true,
-      });
+      await axios.put(
+        `https://product-hunt-server-eight.vercel.app/users/${user.email}`,
+        {
+          isSubscribed: true,
+        }
+      );
       setIsSubscribed(true);
       setIsModalOpen(false); // Close modal
     } catch (error) {

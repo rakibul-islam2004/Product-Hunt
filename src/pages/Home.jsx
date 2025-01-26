@@ -15,7 +15,7 @@ const Home = () => {
       try {
         setIsLoadingFeatured(true); // Set loading state
         const response = await axios.get(
-          "http://localhost:5000/featuredProducts"
+          "https://product-hunt-server-eight.vercel.app/featuredProducts"
         );
 
         if (Array.isArray(response.data)) {

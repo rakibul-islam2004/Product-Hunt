@@ -17,7 +17,7 @@ const Products = () => {
       setLoading(true); // Show loader while fetching
       try {
         const response = await axios.get(
-          `http://localhost:5000/approvedProducts?page=${currentPage}&search=${searchQuery}`
+          `https://product-hunt-server-eight.vercel.app/approvedProducts?page=${currentPage}&search=${searchQuery}`
         );
         const { products = [], total = 0 } = response.data; // Default fallback
         setProducts(products); // Update products list

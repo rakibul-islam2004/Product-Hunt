@@ -15,7 +15,7 @@ const ReportedProducts = () => {
     const fetchReportedProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/reportedProducts"
+          "https://product-hunt-server-eight.vercel.app/reportedProducts"
         );
         setReportedProducts(response.data);
         setLoading(false);
@@ -42,7 +42,9 @@ const ReportedProducts = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/products/${productId}`);
+          await axios.delete(
+            `https://product-hunt-server-eight.vercel.app/products/${productId}`
+          );
           setReportedProducts((prev) =>
             prev.filter((product) => product._id !== productId)
           );
@@ -69,7 +71,7 @@ const ReportedProducts = () => {
       if (result.isConfirmed) {
         try {
           await axios.put(
-            `http://localhost:5000/reportedProducts/${productId}`,
+            `https://product-hunt-server-eight.vercel.app/reportedProducts/${productId}`,
             {
               isReported: false,
             }

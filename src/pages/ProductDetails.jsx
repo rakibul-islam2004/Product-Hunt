@@ -19,7 +19,9 @@ const ProductDetails = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`http://localhost:5000/product/${id}`);
+      const response = await axios.get(
+        `https://product-hunt-server-eight.vercel.app/product/${id}`
+      );
       const productData = response.data?.product;
 
       if (productData) {
@@ -43,9 +45,12 @@ const ProductDetails = () => {
   // Handle Upvote
   const handleUpvote = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/upvote/${id}`, {
-        userId: user.uid,
-      });
+      const response = await axios.post(
+        `https://product-hunt-server-eight.vercel.app/upvote/${id}`,
+        {
+          userId: user.uid,
+        }
+      );
 
       // Update the UI based on the server's response
       if (response.data.message === "Upvote added") {
@@ -84,7 +89,10 @@ const ProductDetails = () => {
         reviewerImage: user.photoURL || "",
       };
 
-      await axios.post(`http://localhost:5000/reviews/${id}`, newReview);
+      await axios.post(
+        `https://product-hunt-server-eight.vercel.app/reviews/${id}`,
+        newReview
+      );
 
       setReviews((prev) => [...prev, newReview]);
     } catch (err) {

@@ -20,8 +20,8 @@ const AdminStatistics = () => {
     const fetchStatistics = async () => {
       try {
         const [productsResponse, usersResponse] = await Promise.all([
-          axios.get("http://localhost:5000/allProducts"),
-          axios.get("http://localhost:5000/allUsers"),
+          axios.get("https://product-hunt-server-eight.vercel.app/allProducts"),
+          axios.get("https://product-hunt-server-eight.vercel.app/allUsers"),
         ]);
 
         const products = productsResponse.data;

@@ -18,7 +18,7 @@ const Dashboard = () => {
       setLoading(true);
       setError("");
       const response = await axios.get(
-        `http://localhost:5000/getRole/${user.email}`
+        `https://product-hunt-server-eight.vercel.app/getRole/${user.email}`
       );
       setRole(response.data.role);
     } catch (err) {

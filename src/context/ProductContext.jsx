@@ -14,7 +14,9 @@ export const ProductProvider = ({ children }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/products");
+        const response = await axios.get(
+          "https://product-hunt-server-eight.vercel.app/products"
+        );
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -28,7 +30,7 @@ export const ProductProvider = ({ children }) => {
     const fetchFeaturedProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products/featured"
+          "https://product-hunt-server-eight.vercel.app/products/featured"
         );
         setFeaturedProducts(response.data);
       } catch (error) {
@@ -39,7 +41,7 @@ export const ProductProvider = ({ children }) => {
     const fetchTrendingProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/products/trending"
+          "https://product-hunt-server-eight.vercel.app/products/trending"
         );
         setTrendingProducts(response.data);
       } catch (error) {

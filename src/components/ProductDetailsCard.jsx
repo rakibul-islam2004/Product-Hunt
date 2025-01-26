@@ -22,9 +22,12 @@ const ProductDetailsCard = ({
   const updateReportedStatus = async (productId, newReportedStatus) => {
     setIsLoading(true);
     try {
-      await axios.put(`http://localhost:5000/updateIsReported/${productId}`, {
-        isReported: newReportedStatus,
-      });
+      await axios.put(
+        `https://product-hunt-server-eight.vercel.app/updateIsReported/${productId}`,
+        {
+          isReported: newReportedStatus,
+        }
+      );
       setIsReported(newReportedStatus);
     } catch (error) {
       console.error("Failed to update reported status:", error);

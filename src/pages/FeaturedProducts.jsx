@@ -11,7 +11,7 @@ const FeaturedProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/approvedProductsModerator"
+          "https://product-hunt-server-eight.vercel.app/approvedProductsModerator"
         );
 
         console.log("Response from server:", response.data);
@@ -38,7 +38,7 @@ const FeaturedProducts = () => {
 
       // Update the product feature status on the server
       await axios.patch(
-        `http://localhost:5000/featuredProductsModerator/${productId}`,
+        `https://product-hunt-server-eight.vercel.app/featuredProductsModerator/${productId}`,
         {
           isFeatured: updatedStatus,
         }

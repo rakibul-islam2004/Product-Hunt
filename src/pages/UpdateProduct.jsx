@@ -18,7 +18,9 @@ const UpdateProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/product/${id}`);
+        const response = await axios.get(
+          `https://product-hunt-server-eight.vercel.app/product/${id}`
+        );
         const data = response.data;
         const product = data.product;
 
@@ -65,7 +67,7 @@ const UpdateProduct = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/products/${id}`,
+        `https://product-hunt-server-eight.vercel.app/products/${id}`,
         formData,
         {
           headers: {

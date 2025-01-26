@@ -15,7 +15,7 @@ const MyProducts = () => {
     const fetchMyProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/${user.email}`
+          `https://product-hunt-server-eight.vercel.app/products/${user.email}`
         );
         setMyProducts(response.data);
         setLoading(false); // Stop loading once the data is fetched
@@ -32,7 +32,9 @@ const MyProducts = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/products/${id}`);
+      await axios.delete(
+        `https://product-hunt-server-eight.vercel.app/products/${id}`
+      );
       setMyProducts(myProducts.filter((product) => product._id !== id)); // Ensure you use _id instead of id
     } catch (error) {
       console.error("Error deleting product:", error);

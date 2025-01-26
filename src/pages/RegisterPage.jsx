@@ -21,7 +21,7 @@ const RegisterPage = () => {
       await registerWithEmail(email, password, name, photoURL);
 
       // Add default role as "user" after registration
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("https://product-hunt-server-eight.vercel.app/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
