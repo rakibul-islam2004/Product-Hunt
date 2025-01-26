@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
+import { Helmet } from "react-helmet-async";
 import MainLayout from "./layouts/MainLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Home from "./pages/Home";
@@ -32,7 +33,7 @@ const App = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Oval color="#00BFFF" height={80} width={80} />{" "}
+        <Oval color="#00BFFF" height={80} width={80} />
         {/* Displaying loader spinner */}
       </div>
     );
@@ -41,27 +42,86 @@ const App = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/products/:id" element={<ProductDetails />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/"
+        element={
+          <>
+            <Helmet>
+              <title>Home | Product Hunt</title>
+            </Helmet>
+            <Home />
+          </>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <>
+            <Helmet>
+              <title>Products | Product Hunt</title>
+            </Helmet>
+            <Products />
+          </>
+        }
+      />
+      <Route
+        path="/products/:id"
+        element={
+          <>
+            <Helmet>
+              <title>Product Details | Product Hunt</title>
+            </Helmet>
+            <ProductDetails />
+          </>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <>
+            <Helmet>
+              <title>Login | Product Hunt</title>
+            </Helmet>
+            <Login />
+          </>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <>
+            <Helmet>
+              <title>Register | Product Hunt</title>
+            </Helmet>
+            <Register />
+          </>
+        }
+      />
 
       {/* Private Routes (Authenticated Users Only) */}
       <Route
         path="/update-product/:id"
         element={
           <PrivateRoute>
-            <UpdateProduct />
+            <>
+              <Helmet>
+                <title>Update Product | Product Hunt</title>
+              </Helmet>
+              <UpdateProduct />
+            </>
           </PrivateRoute>
         }
       />
-
       <Route
         path="/dashboard"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <>
+              <Helmet>
+                <title>Dashboard | Product Hunt</title>
+              </Helmet>
+              <Dashboard />
+            </>
           </PrivateRoute>
         }
       />
@@ -70,7 +130,12 @@ const App = () => {
         element={
           <PrivateRoute>
             <DashboardLayout>
-              <MyProfile />
+              <>
+                <Helmet>
+                  <title>My Profile | Product Hunt</title>
+                </Helmet>
+                <MyProfile />
+              </>
             </DashboardLayout>
           </PrivateRoute>
         }
@@ -80,7 +145,12 @@ const App = () => {
         element={
           <PrivateRoute>
             <DashboardLayout>
-              <AddProduct />
+              <>
+                <Helmet>
+                  <title>Add Product | Product Hunt</title>
+                </Helmet>
+                <AddProduct />
+              </>
             </DashboardLayout>
           </PrivateRoute>
         }
@@ -90,7 +160,12 @@ const App = () => {
         element={
           <PrivateRoute>
             <DashboardLayout>
-              <MyProducts />
+              <>
+                <Helmet>
+                  <title>My Products | Product Hunt</title>
+                </Helmet>
+                <MyProducts />
+              </>
             </DashboardLayout>
           </PrivateRoute>
         }
@@ -102,7 +177,12 @@ const App = () => {
         element={
           <AdminRoute>
             <DashboardLayout>
-              <AdminDashboard />
+              <>
+                <Helmet>
+                  <title>Admin Dashboard | Product Hunt</title>
+                </Helmet>
+                <AdminDashboard />
+              </>
             </DashboardLayout>
           </AdminRoute>
         }
@@ -112,18 +192,27 @@ const App = () => {
         element={
           <AdminRoute>
             <DashboardLayout>
-              <AdminUserManagement />
+              <>
+                <Helmet>
+                  <title>User Management | Product Hunt</title>
+                </Helmet>
+                <AdminUserManagement />
+              </>
             </DashboardLayout>
           </AdminRoute>
         }
       />
-
       <Route
         path="/admin/statistics"
         element={
           <AdminRoute>
             <DashboardLayout>
-              <AdminStatistics />
+              <>
+                <Helmet>
+                  <title>Admin Statistics | Product Hunt</title>
+                </Helmet>
+                <AdminStatistics />
+              </>
             </DashboardLayout>
           </AdminRoute>
         }
@@ -135,7 +224,12 @@ const App = () => {
         element={
           <ModeratorRoute>
             <DashboardLayout>
-              <ModeratorDashboard />
+              <>
+                <Helmet>
+                  <title>Moderator Dashboard | Product Hunt</title>
+                </Helmet>
+                <ModeratorDashboard />
+              </>
             </DashboardLayout>
           </ModeratorRoute>
         }
@@ -145,7 +239,12 @@ const App = () => {
         element={
           <ModeratorRoute>
             <DashboardLayout>
-              <ModerateProducts />
+              <>
+                <Helmet>
+                  <title>Moderate Products | Product Hunt</title>
+                </Helmet>
+                <ModerateProducts />
+              </>
             </DashboardLayout>
           </ModeratorRoute>
         }
@@ -155,18 +254,27 @@ const App = () => {
         element={
           <ModeratorRoute>
             <DashboardLayout>
-              <FeaturedProducts />
+              <>
+                <Helmet>
+                  <title>Featured Products | Product Hunt</title>
+                </Helmet>
+                <FeaturedProducts />
+              </>
             </DashboardLayout>
           </ModeratorRoute>
         }
       />
-
       <Route
         path="/reported"
         element={
           <ModeratorRoute>
             <DashboardLayout>
-              <ReportedProducts />
+              <>
+                <Helmet>
+                  <title>Reported Products | Product Hunt</title>
+                </Helmet>
+                <ReportedProducts />
+              </>
             </DashboardLayout>
           </ModeratorRoute>
         }
@@ -177,7 +285,12 @@ const App = () => {
         path="*"
         element={
           <MainLayout>
-            <ErrorPage />
+            <>
+              <Helmet>
+                <title>404 - Page Not Found | Product Hunt</title>
+              </Helmet>
+              <ErrorPage />
+            </>
           </MainLayout>
         }
       />
