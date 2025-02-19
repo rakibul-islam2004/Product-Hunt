@@ -14,7 +14,7 @@ const AutoFillButtons = ({ onAutoFill }) => {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md w-64">
+    <div className="bg-white p-6 rounded-lg shadow-md w-full sm:w-64">
       <h3 className="text-lg font-bold mb-3">Demo Logins</h3>
       {demoUsers.map((user) => (
         <button
@@ -70,56 +70,51 @@ const LoginPage = () => {
 
   return (
     <MainLayout>
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-md w-96">
-            <h2 className="text-2xl font-bold mb-4">Login</h2>
-            {error && <div className="text-red-600 mb-4">{error}</div>}
-            <form onSubmit={handleLogin}>
+      <div className="flex flex-col sm:flex-row items-center justify-center min-h-screen gap-4 sm:gap-8 p-4">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full sm:w-96">
+          <h2 className="text-2xl font-bold mb-4">Login</h2>
+          {error && <div className="text-red-600 mb-4">{error}</div>}
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full p-2 mb-4 border border-gray-300 rounded"
+            />
+            <div className="relative mb-4">
               <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full p-2 mb-4 border border-gray-300 rounded"
+                className="w-full p-2 border border-gray-300 rounded"
               />
-              <div className="relative mb-4">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-                <span
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                >
-                  {showPassword ? (
-                    <AiOutlineEyeInvisible size={20} />
-                  ) : (
-                    <AiOutlineEye size={20} />
-                  )}
-                </span>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white p-2 rounded mb-4"
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
               >
-                Login
-              </button>
-            </form>
-            <Link
-              to="/register"
-              className="block text-center mt-4 text-blue-500"
+                {showPassword ? (
+                  <AiOutlineEyeInvisible size={20} />
+                ) : (
+                  <AiOutlineEye size={20} />
+                )}
+              </span>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded mb-4"
             >
-              Don't have an account? Register
-            </Link>
-          </div>
-          <AutoFillButtons onAutoFill={handleAutoFill} />
+              Login
+            </button>
+          </form>
+          <Link to="/register" className="block text-center mt-4 text-blue-500">
+            Don't have an account? Register
+          </Link>
         </div>
+        <AutoFillButtons onAutoFill={handleAutoFill} />
       </div>
     </MainLayout>
   );
